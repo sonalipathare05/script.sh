@@ -1,10 +1,18 @@
 
-# script.sh
+#!/bin/bash
+set -e
 
+# Install Apache only if not installed
+if ! rpm -q httpd >/dev/null 2>&1; then
+  yum install httpd -y
+fi
 
-yum install httpd -y
-systemctl  start httpd
+# Start & enable Apache
+systemctl start httpd
 systemctl enable httpd
-echo "hello from Git and jenkins" >> /mnt/index.html
-chmod 777 /mnt/index.html
- cp  /mnt/index.html /var/www/html
+
+# Create web content
+echo "hello from Git and Jenkins" > /var/www/html/index.html
+
+# Secure permissions
+chmod 644 /var/www/html/index.html
